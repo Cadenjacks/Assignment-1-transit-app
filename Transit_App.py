@@ -3,6 +3,12 @@ from requests import get
 # Used to format date/time in the requested format
 from dateutil.parser import parse
 
+# Used to add colour to the terminal text
+from colorama import just_fix_windows_console, Fore, Style
+
+# Initialize colorama for Windows support
+just_fix_windows_console()
+
 API_KEY = 'qYqjPyOCoMV_rD3dCF89'
 
 # Ask for user input
@@ -77,6 +83,14 @@ for route_schedule in route_schedules:
         else:
             estimated_time_fmt = "N/A"
 
+        # Compare times and apply color
+        if estimated_dt == scheduled_dt:
+            color = Fore.GREEN
+        elif estimated_dt > scheduled_dt:
+            color = Fore.RED
+        else:
+            color = Fore.BLUE
+
         # Output arrival info with color
-        print(f"Scheduled: {scheduled_time_fmt}, Estimated: {estimated_time_fmt}")
+        print(color + f"  Scheduled: {scheduled_time_fmt}, Estimated: {estimated_time_fmt}" + Style.RESET_ALL)
     print()

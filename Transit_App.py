@@ -1,5 +1,8 @@
 from requests import get
 
+# Used to format date/time in the requested format
+from dateutil.parser import parse
+
 API_KEY = 'qYqjPyOCoMV_rD3dCF89'
 
 # Ask for user input
@@ -61,6 +64,19 @@ for route_schedule in route_schedules:
         scheduled_time_str = times.get('arrival', {}).get('scheduled')
         estimated_time_str = times.get('arrival', {}).get('estimated')
 
-        print(f"Scheduled: {scheduled_time_str}, Estimated: {estimated_time_str}")
-    
+        # Parse timestamps
+        if scheduled_time_str:
+            scheduled_dt = parse(scheduled_time_str)
+            scheduled_time_fmt = scheduled_dt.strftime("%H:%M:%S")
+        else:
+            scheduled_time_fmt = "N/A"
+
+        if estimated_time_str:
+            estimated_dt = parse(estimated_time_str)
+            estimated_time_fmt = estimated_dt.strftime("%H:%M:%S")
+        else:
+            estimated_time_fmt = "N/A"
+
+        # Output arrival info with color
+        print(f"Scheduled: {scheduled_time_fmt}, Estimated: {estimated_time_fmt}")
     print()
